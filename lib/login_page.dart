@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'forgot_password_page.dart';
+import 'landingpage.dart';
 import 'signup.dart';
 
 class LoginPage extends StatefulWidget {
@@ -60,7 +62,11 @@ class _LoginPageState extends State<LoginPage> {
                     );
 
                     // Navigate to the next page (replace with your landing page)
-                    Navigator.pushReplacementNamed(context, '/landing');
+                    Navigator.pushReplacement(context,
+                      MaterialPageRoute(
+                        builder: (context) => LandingPage(), // Replace with your LandingPage widget
+                      ),
+                    );
                   } catch (e) {
                     print('Error: $e');
                     // Handle authentication errors here
@@ -75,14 +81,23 @@ class _LoginPageState extends State<LoginPage> {
               TextButton(
                 onPressed: () {
                   // Navigate to signup page
-                  Navigator.pushReplacementNamed(context, '/signup');
+                  Navigator.pushReplacement(context,
+                    MaterialPageRoute(
+                      builder: (context) => SignUpPage(), // Replace with your LandingPage widget
+                    ),
+                  );
                 },
                 child: const Text('Don\'t have an account? Sign up'),
               ),
               TextButton(
                 onPressed: () {
                   // Navigate to forgot password page
-                  Navigator.pushNamed(context, '/forgot_password');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ForgotPasswordPage(),
+                    ),
+                  );
                 },
                 child: const Text('Forgot Password?'),
               ),

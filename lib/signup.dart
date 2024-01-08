@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'login_page.dart';
+import 'landingpage.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -74,9 +76,27 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
               TextField(
+                readOnly: true, // Make the text field read-only to prevent manual editing
                 controller: _dobController,
-                decoration: const InputDecoration(labelText: 'Date of Birth'),
+                onTap: () async {
+                  DateTime? selectedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1900),
+                    lastDate: DateTime.now(),
+                  );
+
+                  if (selectedDate != null) {
+                    setState(() {
+                      _dobController.text = selectedDate.toLocal().toString().split(' ')[0];
+                    });
+                  }
+                },
+                decoration: InputDecoration(
+                  labelText: 'Date of Birth',
+                ),
               ),
+
               TextField(
                 controller: _countryController,
                 decoration: const InputDecoration(labelText: 'Country'),
@@ -105,7 +125,11 @@ class _SignUpPageState extends State<SignUpPage> {
                     );
 
                     // Navigate to the next page (replace with your landing page)
-                    Navigator.pushReplacementNamed(context, '/landing');
+                    Navigator.pushReplacement(context,
+                      MaterialPageRoute(
+                        builder: (context) => LandingPage(), // Replace with your LandingPage widget
+                      ),
+                    );
                   } catch (e) {
                     print('Error: $e');
                     // Handle authentication errors here
@@ -120,7 +144,11 @@ class _SignUpPageState extends State<SignUpPage> {
               TextButton(
                 onPressed: () {
                   // Navigate to login page
-                  Navigator.pushReplacementNamed(context, '/login');
+                  Navigator.pushReplacement(context,
+                    MaterialPageRoute(
+                      builder: (context) => LoginPage(), // Replace with your LandingPage widget
+                    ),
+                  );
                 },
                 child: const Text('Already have an account? Log in'),
               ),

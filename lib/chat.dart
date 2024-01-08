@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class FreeLegalAdvicePage extends StatelessWidget {
-  const FreeLegalAdvicePage({super.key});
+class Chat extends StatelessWidget {
+  const Chat({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Free Legal Advice'),
+        title: const Text('Chat with AI'),
       ),
       body: const Center(
         child: Column(
