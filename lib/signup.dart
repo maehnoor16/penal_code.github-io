@@ -138,7 +138,13 @@ class _SignUpPageState extends State<SignUpPage> {
                     );
                   }
                 },
-                child: const Text('Sign Up'),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.brown),
+                ),
+                child: const Text(
+                  'SignUp',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
               const SizedBox(height: 10),
               TextButton(
@@ -150,7 +156,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   );
                 },
-                child: const Text('Already have an account? Log in'),
+                child: const Text('Already have an account? Log in',
+                  style: TextStyle(color: Colors.brown)),
               ),
             ],
           ),

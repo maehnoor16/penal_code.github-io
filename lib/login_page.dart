@@ -75,7 +75,13 @@ class _LoginPageState extends State<LoginPage> {
                     );
                   }
                 },
-                child: const Text('Log In'),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.brown),
+                ),
+                child: const Text(
+                  'Log In',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
               const SizedBox(height: 10),
               TextButton(
@@ -87,7 +93,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   );
                 },
-                child: const Text('Don\'t have an account? Sign up'),
+                child: const Text('Don\'t have an account? Sign up',
+                style: TextStyle(color: Colors.brown),
+               ),
               ),
               TextButton(
                 onPressed: () {
@@ -99,7 +107,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   );
                 },
-                child: const Text('Forgot Password?'),
+                child: const Text('Forgot Password?',
+                  style: TextStyle(color: Colors.brown),
+                ),
               ),
             ],
           ),

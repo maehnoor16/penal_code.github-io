@@ -16,7 +16,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Forgot Password'),
+        title: const Text('Forgot Password',
+          style: TextStyle(color: Colors.brown),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -52,8 +54,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   );
                 }
               },
-              child: const Text('Reset Password'),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.brown),
+              ),
+              child: const Text(
+                'Foget Password',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
+        const SizedBox(height: 20),
           ],
         ),
       ),
