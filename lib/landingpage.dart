@@ -16,13 +16,14 @@ class LandingPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.brown, // Replace with your desired color
-        title: const Text('Penal Code'),
+        title: const Text('Penal Code',
+        style: TextStyle(color: Colors.white),
+        ),
         actions: [
           IconButton(
-            icon: Icon(Icons.search),
+            icon: Icon(Icons.search_outlined, color: Colors.white),
             onPressed: () {
-              // Handle search button press
-              // You can navigate to the search page or show a search dialog
+                // Replace with your custom search delegate
             },
           ),
         ],
