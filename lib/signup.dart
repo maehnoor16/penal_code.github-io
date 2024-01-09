@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'login_page.dart';
 import 'landingpage.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+  const SignUpPage({Key? key}) : super(key: key);
 
   @override
   _SignUpPageState createState() => _SignUpPageState();
@@ -12,6 +14,8 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -28,6 +32,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sign Up'),
+        automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -35,7 +40,7 @@ class _SignUpPageState extends State<SignUpPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/logo.png', height: 150, width: 150), // Replace with your logo
+              Image.asset('assets/logo.png', height: 150, width: 150),
               const SizedBox(height: 20),
               TextField(
                 controller: _emailController,
@@ -76,7 +81,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
               TextField(
-                readOnly: true, // Make the text field read-only to prevent manual editing
+                readOnly: true,
                 controller: _dobController,
                 onTap: () async {
                   DateTime? selectedDate = await showDatePicker(
@@ -96,7 +101,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   labelText: 'Date of Birth',
                 ),
               ),
-
               TextField(
                 controller: _countryController,
                 decoration: const InputDecoration(labelText: 'Country'),
@@ -108,9 +112,7 @@ class _SignUpPageState extends State<SignUpPage> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
-                  // Perform validation
                   if (_passwordController.text != _confirmPasswordController.text) {
-                    // Passwords do not match
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Passwords do not match')),
                     );
@@ -118,23 +120,31 @@ class _SignUpPageState extends State<SignUpPage> {
                   }
 
                   try {
-                    // Create user with email and password
-                    await _auth.createUserWithEmailAndPassword(
+                    UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
                       email: _emailController.text,
                       password: _passwordController.text,
                     );
 
-                    // Navigate to the next page (replace with your landing page)
-                    Navigator.pushReplacement(context,
+                    await _firestore.collection('users').doc(userCredential.user!.uid).set({
+                      'email': _emailController.text,
+                      'username': _usernameController.text,
+                      'dob': _dobController.text,
+                      'country': _countryController.text,
+                      'city': _cityController.text,
+                    });
+
+                    Navigator.pushReplacement(
+                      context,
                       MaterialPageRoute(
-                        builder: (context) => LandingPage(), // Replace with your LandingPage widget
+                        builder: (context) => LandingPage(),
                       ),
                     );
                   } catch (e) {
                     print('Error: $e');
-                    // Handle authentication errors here
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Error signing up. Please try again.')),
+                      SnackBar(
+                        content: Text('Error signing up. Please try again. Error: $e'),
+                      ),
                     );
                   }
                 },
@@ -142,22 +152,21 @@ class _SignUpPageState extends State<SignUpPage> {
                   backgroundColor: MaterialStateProperty.all<Color>(Colors.brown),
                 ),
                 child: const Text(
-                  'SignUp',
+                  'Sign Up',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
               const SizedBox(height: 10),
               TextButton(
                 onPressed: () {
-                  // Navigate to login page
-                  Navigator.pushReplacement(context,
+                  Navigator.pushReplacement(
+                    context,
                     MaterialPageRoute(
-                      builder: (context) => LoginPage(), // Replace with your LandingPage widget
+                      builder: (context) => LoginPage(),
                     ),
                   );
                 },
-                child: const Text('Already have an account? Log in',
-                  style: TextStyle(color: Colors.brown)),
+                child: const Text('Already have an account? Log in', style: TextStyle(color: Colors.brown)),
               ),
             ],
           ),
@@ -166,3 +175,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 }
+
+
+
+

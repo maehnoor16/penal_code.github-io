@@ -1,7 +1,9 @@
-import 'package:bhenskidum/legal_guidance_page.dart';
+import 'package:bhenskidum/update_information_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'login_page.dart';
+import 'legal_guidance_page.dart';
+import 'update_information_page.dart';
 
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage({Key? key}) : super(key: key);
@@ -22,6 +24,8 @@ class _ProfilePageState extends State<MyProfilePage> {
 
   Future<void> _getUser() async {
     User? user = _auth.currentUser;
+    await user?.reload(); // Reload user data to get updated information
+    user = _auth.currentUser; // Get the updated user data
     setState(() {
       _user = user;
     });
@@ -32,26 +36,19 @@ class _ProfilePageState extends State<MyProfilePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.brown,
-        title: Text('Profile'),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              await _auth.signOut();
-              Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
-            },
-            icon: Icon(Icons.exit_to_app),
-          ),
-        ],
+        title: Text(
+          'Profile Details',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: _user != null
-          ? Padding(
-        padding: const EdgeInsets.all(16.0),
+          ? Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CircleAvatar(
-              radius: 50,
+              radius: 80,
               backgroundImage: NetworkImage(_user!.photoURL ?? ''),
             ),
             const SizedBox(height: 16),
@@ -63,86 +60,76 @@ class _ProfilePageState extends State<MyProfilePage> {
             ElevatedButton(
               onPressed: () {
                 // Navigate to update information page
+                User? currentUser = FirebaseAuth.instance.currentUser;
+                if (currentUser != null) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          UpdateInformationPage(user: currentUser),
+                    ),
+                  );
+                } else {
+                  // Handle the case when the user is not logged in
+                  print('User not logged in');
+                }
+              },
+              child: Text('Update Information'),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.white,
+                onPrimary: Colors.brown,
+                side: BorderSide(color: Colors.brown),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => UpdateInformationPage(user: _user!),
-                  ),
+                      builder: (context) => const LegalGuidancePage()),
                 );
+                // Implement your own navigation logic
               },
-              child: Text('Update Information'),
-              style: ElevatedButton.styleFrom(primary: Colors.brown),
+              child: Text('Legal Advice'),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.white,
+                onPrimary: Colors.brown,
+                side: BorderSide(color: Colors.brown),
+              ),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const LegalGuidancePage()));
-                // Implement your own navigation logic
+                // Implement your own navigation logic for study material
               },
-              child: Text('Legal Advice'),
-              style: ElevatedButton.styleFrom(primary: Colors.brown),
+              child: Text('Study Material'),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.white,
+                onPrimary: Colors.brown,
+                side: BorderSide(color: Colors.brown),
+              ),
             ),
-            // Add more options as needed
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () async {
+                await _auth.signOut();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              },
+              child: Text('Signout', style: TextStyle(color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.brown,
+                onPrimary: Colors.white,
+              ),
+            ),
           ],
         ),
       )
           : Center(child: CircularProgressIndicator()),
-    );
-  }
-}
-
-class UpdateInformationPage extends StatelessWidget {
-  final User user;
-
-  const UpdateInformationPage({Key? key, required this.user}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.brown,
-        title: Text('Update Information'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundImage: NetworkImage(user.photoURL ?? ''),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'Update Information for ${user.displayName ?? 'User'}',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            // Implement fields for updating email, password, username, profile picture, date of birth, etc.
-            // Use TextFormField, ImagePicker, DateTimePicker, etc.
-            // Example:
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Update Email'),
-              keyboardType: TextInputType.emailAddress,
-              // Add controller for email
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Update Password'),
-              obscureText: true,
-              // Add controller for password
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                // Implement update logic using FirebaseAuth
-              },
-              child: Text('Update'),
-              style: ElevatedButton.styleFrom(primary: Colors.brown),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

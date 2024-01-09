@@ -33,8 +33,8 @@ class _SplashScreenState extends State<SplashScreen> {
         child: AnimatedContainer(
           duration: const Duration(seconds: 3), // Animation duration
           curve: Curves.easeInOutQuart, // Animation curve
-          width: _imageSize,
-          height: _imageSize,
+          width: 250,
+          height: 250,
           child: Image.asset('assets/logo.png'), // Replace with your image
         ),
       ),
