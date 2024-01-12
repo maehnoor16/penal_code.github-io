@@ -1,6 +1,6 @@
-import 'package:bhenskidum/update_information_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
 import 'login_page.dart';
 import 'legal_guidance_page.dart';
 import 'update_information_page.dart';
@@ -14,7 +14,9 @@ class MyProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<MyProfilePage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance; // Initialize Firestore
   User? _user;
+  String? _username;
 
   @override
   void initState() {
@@ -23,13 +25,29 @@ class _ProfilePageState extends State<MyProfilePage> {
   }
 
   Future<void> _getUser() async {
-    User? user = _auth.currentUser;
-    await user?.reload(); // Reload user data to get updated information
-    user = _auth.currentUser; // Get the updated user data
-    setState(() {
-      _user = user;
-    });
+    try {
+      User? user = _auth.currentUser;
+
+      if (user != null) {
+        // Fetch additional user data from Firestore
+        QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await _firestore.collection('users').where('email', isEqualTo: user.email).get();
+
+        if (querySnapshot.docs.isNotEmpty) {
+          // Assuming there's only one document for the user
+          DocumentSnapshot<Map<String, dynamic>> snapshot = querySnapshot.docs.first;
+
+          setState(() {
+            _user = user;
+            _username = snapshot['username'];
+          });
+        }
+      }
+    } catch (e) {
+      print("Error fetching user data: $e");
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +71,7 @@ class _ProfilePageState extends State<MyProfilePage> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Welcome, ${_user!.displayName ?? 'User'}!',
+              'Welcome, ${_username ?? _user!.email ?? 'User'}!',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
@@ -81,7 +99,6 @@ class _ProfilePageState extends State<MyProfilePage> {
                 side: BorderSide(color: Colors.brown),
               ),
             ),
-
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
@@ -117,7 +134,8 @@ class _ProfilePageState extends State<MyProfilePage> {
                 await _auth.signOut();
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const LoginPage()),
                 );
               },
               child: Text('Signout', style: TextStyle(color: Colors.white)),

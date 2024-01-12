@@ -4,12 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
+
 
 class UpdateInformationPage extends StatefulWidget {
   final User user;
-  final VoidCallback? onProfileImageUpdated; // Callback to notify profile image update
+  final Function()? onProfileUpdated; // Callback to notify profile update
 
-  const UpdateInformationPage({Key? key, required this.user, this.onProfileImageUpdated})
+  const UpdateInformationPage({Key? key, required this.user, this.onProfileUpdated})
       : super(key: key);
 
   @override
@@ -22,18 +26,28 @@ class _UpdateInformationPageState extends State<UpdateInformationPage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _dobController = TextEditingController();
   File? _pickedImage;
+  User? _user;
+  String? _imageUrl;
 
   @override
   void initState() {
     super.initState();
     _usernameController.text = widget.user.displayName ?? '';
     _emailController.text = widget.user.email ?? '';
+    _getUser(); // Fetch the additional user data including username and image URL
   }
 
   Future<void> _updateProfile() async {
     try {
-      await widget.user.updateDisplayName(_usernameController.text);
-      await widget.user.updateEmail(_emailController.text);
+      // Check if the username field is not empty before updating
+      if (_usernameController.text.isNotEmpty) {
+        await widget.user.updateDisplayName(_usernameController.text);
+      }
+
+      // Check if the email field is not empty before updating
+      if (_emailController.text.isNotEmpty) {
+        await widget.user.updateEmail(_emailController.text);
+      }
 
       // Check if the password field is not empty before updating
       if (_passwordController.text.isNotEmpty) {
@@ -42,10 +56,12 @@ class _UpdateInformationPageState extends State<UpdateInformationPage> {
 
       // Update the profile image if a new image is picked
       if (_pickedImage != null) {
-        await widget.user.updatePhotoURL('');
-        await widget.user.updatePhotoURL(_pickedImage!.path);
-        widget.onProfileImageUpdated?.call(); // Notify profile image update
+        await _uploadImageToFirebase(); // Upload image to Firebase Storage
+        widget.onProfileUpdated?.call();
       }
+
+      // Update user data in Firestore
+      await _updateUserDataInFirestore();
 
       // Reload the user to get the updated information
       await widget.user.reload();
@@ -72,6 +88,64 @@ class _UpdateInformationPageState extends State<UpdateInformationPage> {
           content: Text('Failed to update profile. Please try again.'),
         ),
       );
+    }
+  }
+
+  Future<void> _uploadImageToFirebase() async {
+    try {
+      String userEmail = widget.user.email ?? '';
+      String fileName = 'profile_images/$userEmail.jpg';
+
+      // Upload image to Firebase Storage
+      UploadTask uploadTask =
+      FirebaseStorage.instance.ref().child(fileName).putFile(_pickedImage!);
+
+      TaskSnapshot taskSnapshot = await uploadTask;
+
+      // Get the uploaded image URL
+      String imageUrl = await taskSnapshot.ref.getDownloadURL();
+      setState(() {
+        _imageUrl = imageUrl;
+      });
+    } catch (e) {
+      print("Error uploading image to Firebase: $e");
+    }
+  }
+
+
+
+  Future<void> _updateUserDataInFirestore() async {
+    try {
+      // Update user data in Firestore
+      await FirebaseFirestore.instance.collection('users').doc(widget.user.uid).set({
+        if (_usernameController.text.isNotEmpty) 'username': _usernameController.text,
+        if (_emailController.text.isNotEmpty) 'email': _emailController.text,
+        if (_dobController.text.isNotEmpty) 'dob': _dobController.text,
+        if (_imageUrl != null) 'photoURL': _imageUrl, // Store image URL in Firestore
+        // Add other fields as needed
+      }, SetOptions(merge: true));
+    } catch (e) {
+      print("Error updating user data in Firestore: $e");
+    }
+  }
+
+  Future<void> _getUser() async {
+    try {
+      User? user = widget.user; // Use the passed user
+
+      if (user != null) {
+        // Fetch additional user data from Firestore
+        DocumentSnapshot<Map<String, dynamic>> snapshot =
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+
+        setState(() {
+          _user = user;
+          _usernameController.text = snapshot['username'] ?? '';
+          _imageUrl = snapshot['photoURL']; // Get the stored image URL
+        });
+      }
+    } catch (e) {
+      print("Error fetching user data: $e");
     }
   }
 
@@ -105,14 +179,14 @@ class _UpdateInformationPageState extends State<UpdateInformationPage> {
                 radius: 50,
                 backgroundImage: _pickedImage != null
                     ? FileImage(_pickedImage!)
-                    : (widget.user.photoURL != null
-                    ? NetworkImage(widget.user.photoURL!)
+                    : (_imageUrl != null
+                    ? NetworkImage(_imageUrl!)
                     : AssetImage('assets/logo.png') as ImageProvider),
               ),
             ),
             const SizedBox(height: 16),
             Text(
-              'Update Information for ${widget.user.displayName ?? 'User'}',
+              'Update Information for ${_usernameController.text.isNotEmpty ? _usernameController.text : _user?.displayName ?? 'User'}',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),

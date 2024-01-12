@@ -23,6 +23,10 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _dobController = TextEditingController();
   final TextEditingController _countryController = TextEditingController();
   final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController(); // Added Phone No field
+
+  String? selectedGender;
+  String? selectedAge;
 
   bool _isPasswordObscured = true;
   bool _isConfirmPasswordObscured = true;
@@ -40,7 +44,7 @@ class _SignUpPageState extends State<SignUpPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/logo.png', height: 150, width: 150),
+              Image.asset('assets/logo.png', height: 150, width: 250),
               const SizedBox(height: 20),
               TextField(
                 controller: _emailController,
@@ -102,16 +106,107 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
               TextField(
+                controller: _cityController,
+                decoration: const InputDecoration(labelText: 'City'),
+              ),
+              TextField(
                 controller: _countryController,
                 decoration: const InputDecoration(labelText: 'Country'),
               ),
               TextField(
-                controller: _cityController,
-                decoration: const InputDecoration(labelText: 'City'),
+                controller: _phoneController, // Added Phone No field
+                decoration: const InputDecoration(labelText: 'Phone No'),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Text('Gender:'),
+                  Radio<String>(
+                    value: 'Male',
+                    groupValue: selectedGender,
+                    onChanged: (String? value) {
+                      setState(() {
+                        selectedGender = value;
+                      });
+                    },
+                  ),
+                  Text('Male'),
+                  Radio<String>(
+                    value: 'Female',
+                    groupValue: selectedGender,
+                    onChanged: (String? value) {
+                      setState(() {
+                        selectedGender = value;
+                      });
+                    },
+                  ),
+                  Text('Female'),
+                  Radio<String>(
+                    value: 'Other',
+                    groupValue: selectedGender,
+                    onChanged: (String? value) {
+                      setState(() {
+                        selectedGender = value;
+                      });
+                    },
+                  ),
+                  Text('Other'),
+                ],
+              ),
+              Row(
+                children: [
+                  Text('Age:'),
+                  Radio<String>(
+                    value: '18-25',
+                    groupValue: selectedAge,
+                    onChanged: (String? value) {
+                      setState(() {
+                        selectedAge = value;
+                      });
+                    },
+                  ),
+                  Text('18-25'),
+                  Radio<String>(
+                    value: '26-35',
+                    groupValue: selectedAge,
+                    onChanged: (String? value) {
+                      setState(() {
+                        selectedAge = value;
+                      });
+                    },
+                  ),
+                  Text('26-35'),
+                  Radio<String>(
+                    value: '35 Above',
+                    groupValue: selectedAge,
+                    onChanged: (String? value) {
+                      setState(() {
+                        selectedAge = value;
+                      });
+                    },
+                  ),
+                  Text('35 Above'),
+                ],
               ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
+                  // Validation checks
+                  if (_emailController.text.isEmpty ||
+                      _usernameController.text.isEmpty ||
+                      _passwordController.text.isEmpty ||
+                      _confirmPasswordController.text.isEmpty ||
+                      _dobController.text.isEmpty ||
+                      _countryController.text.isEmpty ||
+                      _cityController.text.isEmpty ||
+                      selectedGender == null ||
+                      selectedAge == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Please fill in all required fields')),
+                    );
+                    return;
+                  }
+
                   if (_passwordController.text != _confirmPasswordController.text) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Passwords do not match')),
@@ -131,6 +226,9 @@ class _SignUpPageState extends State<SignUpPage> {
                       'dob': _dobController.text,
                       'country': _countryController.text,
                       'city': _cityController.text,
+                      'phone': _phoneController.text,
+                      'gender': selectedGender,
+                      'age': selectedAge,
                     });
 
                     Navigator.pushReplacement(
@@ -175,7 +273,3 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 }
-
-
-
-

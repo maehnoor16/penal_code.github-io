@@ -7,7 +7,11 @@ class LegalGuidancePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Legal Guidance'),
+        title: Text(
+          'Legal Guidance',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.brown,
       ),
       body: const Center(
         child: Column(

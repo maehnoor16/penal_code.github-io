@@ -35,8 +35,11 @@ class SharePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Share'),
-        backgroundColor: Colors.brown, // Replace with your theme color
+        title: Text(
+          'Share',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.brown,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
