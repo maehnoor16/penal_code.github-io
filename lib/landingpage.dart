@@ -21,7 +21,7 @@ class LandingPage extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.search_outlined, color: Colors.white),
+            icon: const Icon(Icons.search_outlined, color: Colors.white),
             onPressed: () {
               // Show search bar dialog
               showSearch(
@@ -36,7 +36,7 @@ class LandingPage extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.brown, // Replace with your desired color
               ),
@@ -49,41 +49,41 @@ class LandingPage extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: Text('Home'),
+              title: const Text('Home'),
               onTap: () {
                 Navigator.pop(context); // Close the drawer
               },
             ),
             ListTile(
-              title: Text('My Profile'),
+              title: const Text('My Profile'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const MyProfilePage()));
               },
             ),
             ListTile(
-              title: Text('Legal Advice'),
+              title: const Text('Legal Advice'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const LegalGuidancePage()));
               },
             ),
             ListTile(
-              title: Text('Rate Us'),
+              title: const Text('Rate Us'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const RateUsPage()));
               },
             ),
             ListTile(
-              title: Text('Share'),
+              title: const Text('Share'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const SharePage()));
               },
             ),
             ListTile(
-              title: Text('Terms of Use'),
+              title: const Text('Terms of Use'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const TermsOfUsePage()));
@@ -92,7 +92,7 @@ class LandingPage extends StatelessWidget {
           ],
         ),
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Column(
           children: [
             // Your content here
@@ -145,7 +145,7 @@ class CustomSearchDelegate extends SearchDelegate<String> {
   List<Widget> buildActions(BuildContext context) {
     return [
       IconButton(
-        icon: Icon(Icons.clear),
+        icon: const Icon(Icons.clear),
         onPressed: () {
           query = '';
         },
@@ -156,7 +156,7 @@ class CustomSearchDelegate extends SearchDelegate<String> {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.arrow_back),
+      icon: const Icon(Icons.arrow_back),
       onPressed: () {
         close(context, '');
       },
@@ -175,6 +175,6 @@ class CustomSearchDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return SizedBox.shrink();
+    return const SizedBox.shrink();
   }
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "607661121053",
+    "project_id": "penal-code-7d5f4",
+    "storage_bucket": "penal-code-7d5f4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607661121053:android:c16c085e1b7f97b76fb0f4",
+        "android_client_info": {
+          "package_name": "com.example.bhenskidum"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6xgJWfJTFibPo2EQp5dKogcS3zCCOXSQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

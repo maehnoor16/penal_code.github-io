@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SharePage extends StatelessWidget {
-  const SharePage({Key? key}) : super(key: key);
+  const SharePage({super.key});
 
   // You can leave these URLs as placeholders or remove them temporarily
   final String appStoreLink = 'https://apps.apple.com/your-app-id'; // Placeholder or remove
@@ -35,7 +35,7 @@ class SharePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Share',
           style: TextStyle(color: Colors.white),
         ),
@@ -46,7 +46,7 @@ class SharePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'Share Raazi with others!',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
@@ -61,7 +61,7 @@ class SharePage extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            Text(
+            const Text(
               'Share Raazi with your friends and colleagues!',
               textAlign: TextAlign.center,
             ),
@@ -74,7 +74,7 @@ class SharePage extends StatelessWidget {
 
 void main() {
   runApp(MaterialApp(
-    home: SharePage(),
+    home: const SharePage(),
     theme: ThemeData(
       primaryColor: Colors.brown,
       scaffoldBackgroundColor: Colors.white,

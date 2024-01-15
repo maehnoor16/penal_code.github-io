@@ -1,12 +1,13 @@
+import 'package:bhenskidum/study_material_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'login_page.dart';
 import 'legal_guidance_page.dart';
 import 'update_information_page.dart';
 
 class MyProfilePage extends StatefulWidget {
-  const MyProfilePage({Key? key}) : super(key: key);
+  const MyProfilePage({super.key});
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -54,7 +55,7 @@ class _ProfilePageState extends State<MyProfilePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.brown,
-        title: Text(
+        title: const Text(
           'Profile Details',
           style: TextStyle(color: Colors.white),
         ),
@@ -67,12 +68,12 @@ class _ProfilePageState extends State<MyProfilePage> {
           children: [
             CircleAvatar(
               radius: 80,
-              backgroundImage: NetworkImage(_user!.photoURL ?? ''),
+              backgroundImage: AssetImage('assets/pp.jpg'),
             ),
             const SizedBox(height: 16),
             Text(
               'Welcome, ${_username ?? _user!.email ?? 'User'}!',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
@@ -92,12 +93,11 @@ class _ProfilePageState extends State<MyProfilePage> {
                   print('User not logged in');
                 }
               },
-              child: Text('Update Information'),
               style: ElevatedButton.styleFrom(
-                primary: Colors.white,
-                onPrimary: Colors.brown,
-                side: BorderSide(color: Colors.brown),
+                foregroundColor: Colors.brown, backgroundColor: Colors.white,
+                side: const BorderSide(color: Colors.brown),
               ),
+              child: const Text('Update Information'),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
@@ -109,24 +109,26 @@ class _ProfilePageState extends State<MyProfilePage> {
                 );
                 // Implement your own navigation logic
               },
-              child: Text('Legal Advice'),
               style: ElevatedButton.styleFrom(
-                primary: Colors.white,
-                onPrimary: Colors.brown,
-                side: BorderSide(color: Colors.brown),
+                foregroundColor: Colors.brown, backgroundColor: Colors.white,
+                side: const BorderSide(color: Colors.brown),
               ),
+              child: const Text('Legal Advice'),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                // Implement your own navigation logic for study material
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                    builder: (context) => const StudyMaterialPage()),
+                );
               },
-              child: Text('Study Material'),
               style: ElevatedButton.styleFrom(
-                primary: Colors.white,
-                onPrimary: Colors.brown,
-                side: BorderSide(color: Colors.brown),
+                foregroundColor: Colors.brown, backgroundColor: Colors.white,
+                side: const BorderSide(color: Colors.brown),
               ),
+              child: const Text('Study Material'),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
@@ -138,23 +140,22 @@ class _ProfilePageState extends State<MyProfilePage> {
                       builder: (context) => const LoginPage()),
                 );
               },
-              child: Text('Signout', style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
-                primary: Colors.brown,
-                onPrimary: Colors.white,
+                foregroundColor: Colors.white, backgroundColor: Colors.brown,
               ),
+              child: const Text('Signout', style: TextStyle(color: Colors.white)),
             ),
           ],
         ),
       )
-          : Center(child: CircularProgressIndicator()),
+          : const Center(child: CircularProgressIndicator()),
     );
   }
 }
 
 void main() {
   runApp(MaterialApp(
-    home: MyProfilePage(),
+    home: const MyProfilePage(),
     theme: ThemeData(
       primaryColor: Colors.brown,
       hintColor: Colors.white,

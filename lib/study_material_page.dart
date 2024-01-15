@@ -1,8 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'PDF Viewer',
+      theme: ThemeData(
+        primarySwatch: Colors.brown,
+      ),
+      home: const StudyMaterialPage(),
+    );
+  }
+}
+
 class StudyMaterialPage extends StatefulWidget {
-  const StudyMaterialPage({Key? key}) : super(key: key);
+  const StudyMaterialPage({super.key});
 
   @override
   _StudyMaterialPageState createState() => _StudyMaterialPageState();
@@ -11,18 +30,18 @@ class StudyMaterialPage extends StatefulWidget {
 class _StudyMaterialPageState extends State<StudyMaterialPage> {
   String? selectedSection;
   int selectedPdfIndex = 0;
-  List<String> sections = ['Section 1', 'Section 2', 'Section 3','Section 1', 'Section 2', 'Section 3']; // Add your sections here
+  List<String> sections = ['Finance Act1']; // Add your sections here
+
   List<List<String>> pdfFiles = [
-    ['Section1_PDF1.pdf', 'Section1_PDF2.pdf', 'Section1_PDF3.pdf'],
-    ['Section2_PDF1.pdf', 'Section2_PDF2.pdf', 'Section2_PDF3.pdf'],
-    ['Section3_PDF1.pdf', 'Section3_PDF2.pdf', 'Section3_PDF3.pdf'],
+    ['FinanceAct2011.pdf'],
+    // Add more sections and corresponding PDF files as needed
   ]; // Add your PDF files here
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Study Material',
           style: TextStyle(color: Colors.white),
         ),
@@ -31,7 +50,7 @@ class _StudyMaterialPageState extends State<StudyMaterialPage> {
       body: Row(
         children: [
           Container(
-            width: 360, // Adjust the width as needed
+            width: 360,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.brown),
             ),
@@ -43,15 +62,16 @@ class _StudyMaterialPageState extends State<StudyMaterialPage> {
                   onTap: () {
                     setState(() {
                       selectedSection = sections[index];
-                      selectedPdfIndex = 0; // Reset to the first PDF when the section changes
+                      selectedPdfIndex = 0; // Corrected the index here
                     });
                   },
+                  tileColor: selectedSection == sections[index] ? Colors.grey[300] : null,
                 );
               },
             ),
           ),
           Expanded(
-            flex: 3, // Adjust the flex value as needed
+            flex: 3,
             child: pdfWidget(),
           ),
         ],
@@ -61,13 +81,18 @@ class _StudyMaterialPageState extends State<StudyMaterialPage> {
 
   Widget pdfWidget() {
     if (selectedSection == null) {
-      return Center(
+      return const Center(
         child: Text('Please select a section.'),
       );
     }
 
+    String filePath =
+        'material/${pdfFiles[sections.indexOf(selectedSection!)][selectedPdfIndex]}';
+    print('Selected Section: $selectedSection');
+    print('File Path: $filePath');
+
     return PDFView(
-      filePath: 'assets/${pdfFiles[sections.indexOf(selectedSection!)][selectedPdfIndex]}',
+      filePath: filePath,
       autoSpacing: true,
       pageFling: true,
       onRender: (_) {},

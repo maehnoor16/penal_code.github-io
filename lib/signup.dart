@@ -6,7 +6,7 @@ import 'login_page.dart';
 import 'landingpage.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+  const SignUpPage({super.key});
 
   @override
   _SignUpPageState createState() => _SignUpPageState();
@@ -101,7 +101,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     });
                   }
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Date of Birth',
                 ),
               ),
@@ -120,7 +120,7 @@ class _SignUpPageState extends State<SignUpPage> {
               const SizedBox(height: 20),
               Row(
                 children: [
-                  Text('Gender:'),
+                  const Text('Gender:'),
                   Radio<String>(
                     value: 'Male',
                     groupValue: selectedGender,
@@ -130,7 +130,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       });
                     },
                   ),
-                  Text('Male'),
+                  const Text('Male'),
                   Radio<String>(
                     value: 'Female',
                     groupValue: selectedGender,
@@ -140,7 +140,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       });
                     },
                   ),
-                  Text('Female'),
+                  const Text('Female'),
                   Radio<String>(
                     value: 'Other',
                     groupValue: selectedGender,
@@ -150,12 +150,12 @@ class _SignUpPageState extends State<SignUpPage> {
                       });
                     },
                   ),
-                  Text('Other'),
+                  const Text('Other'),
                 ],
               ),
               Row(
                 children: [
-                  Text('Age:'),
+                  const Text('Age:'),
                   Radio<String>(
                     value: '18-25',
                     groupValue: selectedAge,
@@ -165,7 +165,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       });
                     },
                   ),
-                  Text('18-25'),
+                  const Text('18-25'),
                   Radio<String>(
                     value: '26-35',
                     groupValue: selectedAge,
@@ -175,7 +175,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       });
                     },
                   ),
-                  Text('26-35'),
+                  const Text('26-35'),
                   Radio<String>(
                     value: '35 Above',
                     groupValue: selectedAge,
@@ -185,7 +185,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       });
                     },
                   ),
-                  Text('35 Above'),
+                  const Text('35 Above'),
                 ],
               ),
               const SizedBox(height: 20),
@@ -222,6 +222,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                     await _firestore.collection('users').doc(userCredential.user!.uid).set({
                       'email': _emailController.text,
+                      'password': _passwordController.text,
                       'username': _usernameController.text,
                       'dob': _dobController.text,
                       'country': _countryController.text,
@@ -234,7 +235,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => LandingPage(),
+                        builder: (context) => const LandingPage(),
                       ),
                     );
                   } catch (e) {
@@ -260,7 +261,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => LoginPage(),
+                      builder: (context) => const LoginPage(),
                     ),
                   );
                 },

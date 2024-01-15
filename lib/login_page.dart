@@ -65,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                     // Navigate to the next page (replace with your landing page)
                     Navigator.pushReplacement(context,
                       MaterialPageRoute(
-                        builder: (context) => LandingPage(), // Replace with your LandingPage widget
+                        builder: (context) => const LandingPage(), // Replace with your LandingPage widget
                       ),
                     );
                   } catch (e) {
@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                   // Navigate to signup page
                   Navigator.pushReplacement(context,
                     MaterialPageRoute(
-                      builder: (context) => SignUpPage(), // Replace with your LandingPage widget
+                      builder: (context) => const SignUpPage(), // Replace with your LandingPage widget
                     ),
                   );
                 },
@@ -104,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ForgotPasswordPage(),
+                      builder: (context) => const ForgotPasswordPage(),
                     ),
                   );
                 },

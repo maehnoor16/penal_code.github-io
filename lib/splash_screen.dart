@@ -11,8 +11,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  final double _imageSize = 100.0; // Initial size of the image
-
   @override
   void initState() {
     super.initState();

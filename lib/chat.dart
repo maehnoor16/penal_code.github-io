@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class Chat extends StatefulWidget {
-  const Chat({Key? key}) : super(key: key);
+  const Chat({super.key});
 
   @override
   _ChatState createState() => _ChatState();
@@ -11,13 +11,13 @@ class Chat extends StatefulWidget {
 
 class _ChatState extends State<Chat> {
   final TextEditingController _textController = TextEditingController();
-  List<ChatMessage> _chatMessages = [];
+  final List<ChatMessage> _chatMessages = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Chat with AI',
           style: TextStyle(color: Colors.white),
         ),
@@ -50,13 +50,13 @@ class _ChatState extends State<Chat> {
         Expanded(
           child: TextField(
             controller: _textController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'Type your message...',
             ),
           ),
         ),
         IconButton(
-          icon: Icon(Icons.send),
+          icon: const Icon(Icons.send),
           onPressed: () {
             _sendMessage(_textController.text);
           },
@@ -113,15 +113,15 @@ class ChatMessage extends StatelessWidget {
   final String text;
   final MessageType type;
 
-  const ChatMessage(this.text, this.type);
+  const ChatMessage(this.text, this.type, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       alignment: type == MessageType.User ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        padding: EdgeInsets.all(12),
+        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: type == MessageType.User ? Colors.brown : Colors.white,
           borderRadius: BorderRadius.circular(8),
@@ -144,7 +144,7 @@ enum MessageType {
 
 void main() {
   runApp(MaterialApp(
-    home: Chat(),
+    home: const Chat(),
     theme: ThemeData(
       primaryColor: Colors.brown,
       scaffoldBackgroundColor: Colors.white,

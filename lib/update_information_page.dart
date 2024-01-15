@@ -1,13 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-
-
 
 class UpdateInformationPage extends StatefulWidget {
   final User user;
@@ -25,7 +18,6 @@ class _UpdateInformationPageState extends State<UpdateInformationPage> {
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _dobController = TextEditingController();
-  File? _pickedImage;
   User? _user;
   String? _imageUrl;
 
@@ -52,12 +44,6 @@ class _UpdateInformationPageState extends State<UpdateInformationPage> {
       // Check if the password field is not empty before updating
       if (_passwordController.text.isNotEmpty) {
         await widget.user.updatePassword(_passwordController.text);
-      }
-
-      // Update the profile image if a new image is picked
-      if (_pickedImage != null) {
-        await _uploadImageToFirebase(); // Upload image to Firebase Storage
-        widget.onProfileUpdated?.call();
       }
 
       // Update user data in Firestore
@@ -91,29 +77,6 @@ class _UpdateInformationPageState extends State<UpdateInformationPage> {
     }
   }
 
-  Future<void> _uploadImageToFirebase() async {
-    try {
-      String userEmail = widget.user.email ?? '';
-      String fileName = 'profile_images/$userEmail.jpg';
-
-      // Upload image to Firebase Storage
-      UploadTask uploadTask =
-      FirebaseStorage.instance.ref().child(fileName).putFile(_pickedImage!);
-
-      TaskSnapshot taskSnapshot = await uploadTask;
-
-      // Get the uploaded image URL
-      String imageUrl = await taskSnapshot.ref.getDownloadURL();
-      setState(() {
-        _imageUrl = imageUrl;
-      });
-    } catch (e) {
-      print("Error uploading image to Firebase: $e");
-    }
-  }
-
-
-
   Future<void> _updateUserDataInFirestore() async {
     try {
       // Update user data in Firestore
@@ -121,7 +84,6 @@ class _UpdateInformationPageState extends State<UpdateInformationPage> {
         if (_usernameController.text.isNotEmpty) 'username': _usernameController.text,
         if (_emailController.text.isNotEmpty) 'email': _emailController.text,
         if (_dobController.text.isNotEmpty) 'dob': _dobController.text,
-        if (_imageUrl != null) 'photoURL': _imageUrl, // Store image URL in Firestore
         // Add other fields as needed
       }, SetOptions(merge: true));
     } catch (e) {
@@ -141,24 +103,11 @@ class _UpdateInformationPageState extends State<UpdateInformationPage> {
         setState(() {
           _user = user;
           _usernameController.text = snapshot['username'] ?? '';
-          _imageUrl = snapshot['photoURL']; // Get the stored image URL
+          _imageUrl = snapshot['profileImage']; // Get the stored image URL
         });
       }
     } catch (e) {
       print("Error fetching user data: $e");
-    }
-  }
-
-  Future<void> _pickImage() async {
-    try {
-      final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (pickedImage != null) {
-        setState(() {
-          _pickedImage = File(pickedImage.path);
-        });
-      }
-    } catch (e) {
-      print("Error picking profile picture: $e");
     }
   }
 
@@ -173,16 +122,9 @@ class _UpdateInformationPageState extends State<UpdateInformationPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            GestureDetector(
-              onTap: _pickImage,
-              child: CircleAvatar(
-                radius: 50,
-                backgroundImage: _pickedImage != null
-                    ? FileImage(_pickedImage!)
-                    : (_imageUrl != null
-                    ? NetworkImage(_imageUrl!)
-                    : AssetImage('assets/logo.png') as ImageProvider),
-              ),
+            CircleAvatar(
+              radius: 50,
+              backgroundImage: AssetImage('assets/profile.png'),
             ),
             const SizedBox(height: 16),
             Text(
