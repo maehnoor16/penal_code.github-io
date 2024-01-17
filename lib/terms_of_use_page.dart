@@ -20,12 +20,12 @@ class TermsOfUsePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Welcome to [Your App Name]!',
+                'Welcome to Penal Code!',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 16),
               Text(
-                'By accessing or using our mobile application, [Your App Name], you agree to comply with and be bound by the following terms and conditions. Please read these Terms of Use carefully before using our app.',
+                'By accessing or using our mobile application, Penal Code, you agree to comply with and be bound by the following terms and conditions. Please read these Terms of Use carefully before using our app.',
               ),
               SizedBox(height: 16),
               Text(
@@ -33,7 +33,7 @@ class TermsOfUsePage extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Text(
-                'By using [Your App Name], you acknowledge that you have read, understood, and agree to be bound by these Terms of Use. If you do not agree to these terms, please refrain from using our app.',
+                'By using Penal Code, you acknowledge that you have read, understood, and agree to be bound by these Terms of Use. If you do not agree to these terms, please refrain from using our app.',
               ),
               SizedBox(height: 16),
               Text(
@@ -41,7 +41,7 @@ class TermsOfUsePage extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Text(
-                '[Your App Name] provides information related to penal codes for educational and informational purposes only. The content presented in this app does not constitute legal advice, and we encourage users to consult with legal professionals for specific legal concerns.',
+                'Penal Code provides information related to penal codes for educational and informational purposes only. The content presented in this app does not constitute legal advice, and we encourage users to consult with legal professionals for specific legal concerns.',
               ),
               SizedBox(height: 16),
               Text(
@@ -49,7 +49,7 @@ class TermsOfUsePage extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Text(
-                'You agree to use [Your App Name] responsibly and not engage in any activities that may violate applicable laws, regulations, or the rights of others. You are solely responsible for the content you submit, and you must not engage in any unlawful or unauthorized activities.',
+                'You agree to use Penal Code responsibly and not engage in any activities that may violate applicable laws, regulations, or the rights of others. You are solely responsible for the content you submit, and you must not engage in any unlawful or unauthorized activities.',
               ),
               SizedBox(height: 16),
               Text(
@@ -57,7 +57,7 @@ class TermsOfUsePage extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Text(
-                'While we strive to provide accurate and up-to-date information, [Your App Name] makes no representations or warranties of any kind, express or implied, about the completeness, accuracy, reliability, suitability, or availability of the information provided. Reliance on any information from the app is at your own risk.',
+                'While we strive to provide accurate and up-to-date information, Penal Code makes no representations or warranties of any kind, express or implied, about the completeness, accuracy, reliability, suitability, or availability of the information provided. Reliance on any information from the app is at your own risk.',
               ),
               SizedBox(height: 16),
               Text(
@@ -65,7 +65,7 @@ class TermsOfUsePage extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Text(
-                '[Your App Name] reserves the right to modify or replace these Terms of Use at any time. It is your responsibility to check for updates periodically. Your continued use of the app after any changes to these terms constitutes acceptance of those changes.',
+                'Penal Code reserves the right to modify or replace these Terms of Use at any time. It is your responsibility to check for updates periodically. Your continued use of the app after any changes to these terms constitutes acceptance of those changes.',
               ),
               SizedBox(height: 16),
               Text(
@@ -73,7 +73,7 @@ class TermsOfUsePage extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Text(
-                '[Your App Name] reserves the right to terminate or suspend your access to the app at any time, without notice, for any reason, including a breach of these Terms of Use.',
+                'Penal Code reserves the right to terminate or suspend your access to the app at any time, without notice, for any reason, including a breach of these Terms of Use.',
               ),
               SizedBox(height: 16),
               Text(
@@ -85,7 +85,7 @@ class TermsOfUsePage extends StatelessWidget {
               ),
               SizedBox(height: 16),
               Text(
-                'Thank you for using [Your App Name]! If you have any questions or concerns about these Terms of Use, please contact us at [your contact email].',
+                'Thank you for using Penal Code! If you have any questions or concerns about these Terms of Use, please contact us at penalcode@gmail.com.',
               ),
             ],
           ),

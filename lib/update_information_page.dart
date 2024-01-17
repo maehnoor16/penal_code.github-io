@@ -124,7 +124,7 @@ class _UpdateInformationPageState extends State<UpdateInformationPage> {
           children: [
             CircleAvatar(
               radius: 50,
-              backgroundImage: AssetImage('assets/profile.png'),
+              backgroundImage: AssetImage('assets/profile.jpg'),
             ),
             const SizedBox(height: 16),
             Text(

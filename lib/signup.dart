@@ -23,7 +23,8 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _dobController = TextEditingController();
   final TextEditingController _countryController = TextEditingController();
   final TextEditingController _cityController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController(); // Added Phone No field
+  final TextEditingController _phoneController = TextEditingController();
+  // Added Phone No field
 
   String? selectedGender;
   String? selectedAge;
